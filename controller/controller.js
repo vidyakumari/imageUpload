@@ -15,7 +15,7 @@ exports.upload =  (req, res) =>{
      console.log('Upload complete');
    
      res.writeHead(200, { 'Connection': 'close' });
-     res.end("That's all folks!");
+     res.end("uploaded successfully!");
    });
    // busboy.on("close",()=>{
    
