@@ -2,7 +2,7 @@ var Busboy = require('busboy');
 var path = require('path');
 var fs = require('fs');
 var image = require('../image/image')
-
+//upload using busboy
 exports.upload = (req, res) => {
     var busboy = new Busboy({ headers: req.headers });
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
@@ -27,6 +27,7 @@ exports.upload = (req, res) => {
 
 };
 
+//using base64 conversion
 exports.base64upload = (req, res) => {
     var base64Data = req.body.image.replace(/^data:image\/(?:jpeg|jpg|JPEG|JPG|png|PNG);base64,/, "");
     var filename = 'Images';
