@@ -1,20 +1,29 @@
-var path = require('path');
-var fs = require('fs');
-var os = require('os');
+// Get the packages we need
 var express = require('express');
-var app = express();
-const route = require('./routes/routes')
-var Busboy = require('busboy')
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+var busboy = require('connect-busboy');
+var routes = require('./routes/routes');
 
-// define a simple route
-app.get('/', (req, res) => {
-  res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."});
-});
+// Connect to the MongoDB
+mongoose.connect('mongodb://localhost:27017/imageupload', { useNewUrlParser: true });
 
-// Require Notes routes
-app.use('/', route);
+// Create Express application
+var app = module.exports = express();
 
-// listen for requests
-app.listen(3000, () => {
-  console.log("Server is listening on port 3000");
-});
+var NODE_ENV = 'development';
+//Set Variables
+app.set('env', process.env.NODE_ENV || 'production');
+app.use(busboy());
+app.use(express.static(__dirname));
+app.use(bodyParser.json({ limit: '200mb' }));
+app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
+
+app.use('/', routes);
+
+// Use environment defined port or 3000
+var port = process.env.PORT || 3000;
+
+// Start the server
+app.listen(port);
+console.log('Server starts on port ' + port);
